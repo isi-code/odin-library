@@ -15,21 +15,26 @@
             <h1>My Book Library</h1>
             <button id="openForm">Add Book</button>
         </div>
-        <dialog>
+        <dialog close>
             <form action="#">
-                <label>Title *<input type="text"></label>
-                <label>Author *<input type="text"></label>
+                <label>Title<input type="text"></label>
+                <label>Author<input type="text"></label>
                 <label>Description <textarea name="" id=""></textarea></label>
                 <label>Genre<input type="text"></label>
                 <label>Pages<input type="number"></label>
                 <label>Picture Url<input type="url"></label>
                 <label>Release Date<input type="date"></label>
-                <div>
-                    <input type="radio" id="read" name="isRead" value="yes" />
-                    <label for="read">Read</label>
-                    <input type="radio" id="not-read" name="isRead" value="no" />
-                    <label for="not-read">Not read</label>
-                </div>
+                <fieldset>
+                    <legend>Did you read it?</legend>
+                    <div>
+                        <label for="read">Read</label>
+                        <input type="radio" id="read" name="isRead" value="yes" />
+                    </div>
+                    <div>
+                        <label for="not-read">Not Read</label>
+                        <input type="radio" id="not-read" name="isRead" value="no" />
+                    </div>
+                </fieldset>
                 <button type="submit">Add Book to Library</button>
             </form>
         </dialog>
