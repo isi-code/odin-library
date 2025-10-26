@@ -106,20 +106,25 @@ myLibrary.forEach(book => {
   statusContent.textContent = book.read === false ? "Not Read" : "Read 🤓";
   status.appendChild(statusContent);
 
+  const buttonContainer = document.createElement("div");
+  buttonContainer.setAttribute("class", "btn-container")
 
   const readBtn = document.createElement("button");
+  readBtn.textContent = "Mark Read";
+  readBtn.value = book.read === false ? "Not Read" : "Read";
 
   const removeBook = document.createElement("button");
+  removeBook.textContent = "Remove book";
+  buttonContainer.append(readBtn, removeBook);
 
-  //bookBox.append(img, title, author, genre, description, pages);
-  bookBox.append(img, title, author, genre, pages, description, status);
+  bookBox.append(img, title, author, genre, pages, description, status, buttonContainer);
 
   libContainer.appendChild(bookBox);
 });
 
 
-//const addBookBtn = document.querySelector("button[submit]");
-/*addBookBtn.addEventListener("click", (e) => {
-  e.preventDefault();
-  addBookToLibrary();
-})*/
+const addBookBtn = document.getElementById("openForm");
+const modalForm = document.querySelector("dialog");
+addBookBtn.addEventListener("click", (e) => {
+  modalForm.showModal();
+})
