@@ -72,6 +72,7 @@ if (!localStorage.hasOwnProperty("myLibrary")) {
 const libContainer = document.querySelector("#library");
 const addBookBtn = document.getElementById("openForm");
 const modalForm = document.querySelector("dialog");
+const addBookform = document.querySelector("button[type=submit]");
 
 addBookBtn.addEventListener("click", () => {
   modalForm.showModal();
@@ -139,3 +140,11 @@ function makeBookCard(book) {
 if (myLibrary.length > 0) {
   myLibrary.forEach(book => { makeBookCard(book) });
 }
+
+// addBookform.addEventListener("click", (e) => {
+//   e.preventDefault();
+//   console.dir(e)
+//   console.log(e.target.form)
+
+//   addBookToLibrary();
+// })
