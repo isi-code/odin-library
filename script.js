@@ -1,5 +1,4 @@
 const myLibrary = [];
-//localStorage.setItem("library",JSON.stringify(myLibrary))
 
 function Book(title, genre, description, author, pictureUrl, releaseDate, pages, read) {
   // the constructor..
@@ -40,31 +39,45 @@ function addBookToLibrary(title, genre, description, author, pictureUrl, release
   myLibrary.push(book.makeBook())
 }
 
-addBookToLibrary(
-  "The Little Prince",
-  "Novella",
-  "A stranded aviator meets a young prince who has travelled from his tiny asteroid to Earth; through their encounter the story touches on themes of friendship, love, loss, loneliness and the human condition.",
-  "Antoine de Saint-Exupéry",
-  "https://upload.wikimedia.org/wikipedia/en/0/05/Littleprince.JPG",
-  "April 1943",
-  "96",
-  true
-);
+if (!localStorage.hasOwnProperty("myLibrary")) {
+  addBookToLibrary(
+    "The Little Prince",
+    "Novella",
+    "A stranded aviator meets a young prince who has travelled from his tiny asteroid to Earth; through their encounter the story touches on themes of friendship, love, loss, loneliness and the human condition.",
+    "Antoine de Saint-Exupéry",
+    "https://upload.wikimedia.org/wikipedia/en/0/05/Littleprince.JPG",
+    "April 1943",
+    "96",
+    true
+  );
 
-addBookToLibrary(
-  "The Little Prince",
-  "Novella",
-  "A stranded aviator meets a young prince who has travelled from his tiny asteroid to Earth; through their encounter the story touches on themes of friendship, love, loss, loneliness and the human condition.",
-  "Antoine de Saint-Exupéry",
-  "https://upload.wikimedia.org/wikipedia/en/0/05/Littleprince.JPG",
-  "April 1943",
-  "96",
-  false
-);
+  addBookToLibrary(
+    "Frankenstein; or, The Modern Prometheus",
+    "Gothic novel",
+    "Frankenstein tells the story of Victor Frankenstein, a young scientist who creates a sapient creature in an unorthodox scientific experiment that involved putting it together with different body parts.",
+    "Mary Shelley",
+    "https://upload.wikimedia.org/wikipedia/commons/6/65/Frankenstein_and_Monster_-_The_Cincinnati_Enquirer%2C_1910.jpg",
+    "January 1818",
+    "280",
+    false
+  );
+  localStorage.setItem("myLibrary", JSON.stringify(myLibrary));
+} else {
+  const books = JSON.parse(localStorage.getItem("myLibrary"));
+  books.forEach(book => {
+    myLibrary.push(book);
+  });
+}
 
 const libContainer = document.querySelector("#library");
+const addBookBtn = document.getElementById("openForm");
+const modalForm = document.querySelector("dialog");
 
-myLibrary.forEach(book => {
+addBookBtn.addEventListener("click", () => {
+  modalForm.showModal();
+})
+
+function makeBookCard(book) {
   const bookBox = document.createElement("div");
   bookBox.setAttribute("class", "book-box");
   bookBox.dataset["id"] = book.id;
@@ -103,6 +116,7 @@ myLibrary.forEach(book => {
   const status = document.createElement("p");
   status.innerHTML = "<b>Status: </b>";
   const statusContent = document.createElement("span");
+  statusContent.setAttribute("class", "status")
   statusContent.textContent = book.read === false ? "Not Read" : "Read 🤓";
   status.appendChild(statusContent);
 
@@ -120,11 +134,8 @@ myLibrary.forEach(book => {
   bookBox.append(img, title, author, genre, pages, description, status, buttonContainer);
 
   libContainer.appendChild(bookBox);
-});
+}
 
-
-const addBookBtn = document.getElementById("openForm");
-const modalForm = document.querySelector("dialog");
-addBookBtn.addEventListener("click", (e) => {
-  modalForm.showModal();
-})
+if (myLibrary.length > 0) {
+  myLibrary.forEach(book => { makeBookCard(book) });
+}
