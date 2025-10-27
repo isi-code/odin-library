@@ -14,29 +14,16 @@ function Book(title, genre, description, author, pictureUrl, datePublished, page
   this.pictureUrl = pictureUrl;
   this.datePublished = datePublished;
   this.read = (read === "yes" || read === true) ? true : false;
-
-  this.makeBook = function () {
-    const book = {};
-
-    book.id = this.id;
-    book.title = this.title;
-    book.genre = this.genre;
-    book.description = this.description;
-    book.author = this.author;
-    book.pictureUrl = this.pictureUrl;
-    book.datePublished = this.datePublished;
-    book.pages = this.pages;
-    book.read = this.read;
-
-    return book
-  };
-
 };
+
+Book.prototype.updateRead = function(){
+  this.read = (this.read === "yes" || this.read === true) ? true : false;
+}
 
 function addBookToLibrary(title, genre, description, author, pictureUrl, datePublished, pages, read) {
   // take params, create a book then a store it in the array
   const book = new Book(title, genre, description, author, pictureUrl, datePublished, pages, read);
-  myLibrary.push(book.makeBook())
+  myLibrary.push(book);
 }
 
 const libContainer = document.querySelector("#library");
@@ -163,17 +150,19 @@ function makeBookCard(book) {
 
     bookBox.addEventListener("click",(e)=>{
     if (e.target.tagName === "BUTTON"){
+      const id = e.target.dataset.id;
+      const indexToUpdate = myLibrary.findIndex(book => book.id === id);
       if (e.target.value === "Not read" || e.target.value === "Read"){
-        myLibrary.forEach(book => { if (book.id === e.target.dataset.id) book.read = book.read === false ? true : false; });
+        //(myLibrary[indexToUpdate].updateRead();
         localStorage.setItem("myLibrary", JSON.stringify(myLibrary));
       }
       else if(e.target.className === "removeBtn"){
-        let indexToRemove = myLibrary.findIndex(book => book.id === e.target.dataset.id);
-        myLibrary.splice(indexToRemove,1);
+        myLibrary.splice(indexToUpdate,1);
         localStorage.setItem("myLibrary", JSON.stringify(myLibrary))
       }
     }
     refreshBooks()
+    console.log(myLibrary);
   })
   libContainer.appendChild(bookBox);
 }
