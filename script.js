@@ -13,7 +13,7 @@ function Book(title, genre, description, author, pictureUrl, datePublished, page
   this.description = description;
   this.pictureUrl = pictureUrl;
   this.datePublished = datePublished;
-  this.read = read;
+  this.read = (read === "yes" || read === true) ? true : false;
 
   this.makeBook = function () {
     const book = {};
@@ -38,6 +38,12 @@ function addBookToLibrary(title, genre, description, author, pictureUrl, datePub
   const book = new Book(title, genre, description, author, pictureUrl, datePublished, pages, read);
   myLibrary.push(book.makeBook())
 }
+
+const libContainer = document.querySelector("#library");
+const addBookBtn = document.getElementById("openForm");
+const modalForm = document.querySelector("dialog");
+const addBookform = document.querySelector("button[type=submit]");
+const dialogForm = document.getElementById("dialogForm");
 
 if (!localStorage.hasOwnProperty("myLibrary")) {
   addBookToLibrary(
@@ -68,16 +74,7 @@ if (!localStorage.hasOwnProperty("myLibrary")) {
     myLibrary.push(book);
   });
 }
-
-const libContainer = document.querySelector("#library");
-const addBookBtn = document.getElementById("openForm");
-const modalForm = document.querySelector("dialog");
-const addBookform = document.querySelector("button[type=submit]");
-const dialogForm = document.getElementById("dialogForm");
-
-if (myLibrary.length > 0) {
-  myLibrary.forEach(book => { makeBookCard(book) });
-}
+refreshBooks()
 
 addBookBtn.addEventListener("click", () => {
   modalForm.showModal();
@@ -96,19 +93,13 @@ addBookBtn.addEventListener("click", () => {
     localStorage.setItem("myLibrary", JSON.stringify(myLibrary));
     dialogForm.style.display = "none";
     
-    const books = document.querySelectorAll(".book-box")
-    books.forEach((book)=>{book.remove();});
-
-    if (myLibrary.length > 0) {
-      myLibrary.forEach(book => { makeBookCard(book) });
-    }
+    refreshBooks()
   });
 });
 
 function makeBookCard(book) {
   const bookBox = document.createElement("div");
   bookBox.setAttribute("class", "book-box");
-  bookBox.dataset["id"] = book.id;
 
   const img = document.createElement("img");
   img.setAttribute("src", book.pictureUrl);
@@ -120,6 +111,7 @@ function makeBookCard(book) {
   const descriptionTitle = document.createElement("p");
   descriptionTitle.innerHTML = '<b>Description: </b>';
   const descriptionContent = document.createElement("p");
+  descriptionContent.className = "desc-text";
   descriptionContent.textContent = book.description;
   description.append(descriptionTitle, descriptionContent);
 
@@ -159,12 +151,38 @@ function makeBookCard(book) {
 
   const readBtn = document.createElement("button");
   readBtn.textContent = "Mark Read";
-  readBtn.value = (book.read === false || book.read === "no") ? "Not Read" : "Read";
+  readBtn.dataset.id = book.id
+  readBtn.value = (book.read === false || book.read === "no") ? "Not read" : "Read";
 
   const removeBook = document.createElement("button");
+  removeBook.setAttribute("class","removeBtn")
   removeBook.textContent = "Remove book";
+  removeBook.dataset.id = book.id
   buttonContainer.append(readBtn, removeBook);
-
   bookBox.append(img, title, author,datePublished, genre, pages, description, status, buttonContainer);
+
+    bookBox.addEventListener("click",(e)=>{
+    if (e.target.tagName === "BUTTON"){
+      if (e.target.value === "Not read" || e.target.value === "Read"){
+        myLibrary.forEach(book => { if (book.id === e.target.dataset.id) book.read = book.read === false ? true : false; });
+        localStorage.setItem("myLibrary", JSON.stringify(myLibrary));
+      }
+      else if(e.target.className === "removeBtn"){
+        let indexToRemove = myLibrary.findIndex(book => book.id === e.target.dataset.id);
+        myLibrary.splice(indexToRemove,1);
+        localStorage.setItem("myLibrary", JSON.stringify(myLibrary))
+      }
+    }
+    refreshBooks()
+  })
   libContainer.appendChild(bookBox);
+}
+
+function refreshBooks(){
+  const books = document.querySelectorAll(".book-box")
+  if (books.length > 0) books.forEach((book)=>{book.remove();});
+
+  if (myLibrary.length > 0) {
+    myLibrary.forEach(book => { makeBookCard(book) });
+  }
 }
