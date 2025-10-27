@@ -15,15 +15,15 @@
             <h1>My Book Library</h1>
             <button id="openForm">Add Book</button>
         </div>
-        <dialog>
+        <dialog id="dialogForm">
             <form action="#">
-                <label>Title<input type="text"></label>
-                <label>Author<input type="text"></label>
-                <label>Description <textarea name="" id=""></textarea></label>
-                <label>Genre<input type="text"></label>
-                <label>Pages<input type="number"></label>
-                <label>Picture Url<input type="url"></label>
-                <label>Release Date<input type="date"></label>
+                <label for="title">Title<input type="text" name="title" id="title"></label>
+                <label for="author">Author<input type="text" name="author" id="author"></label>
+                <label for="description">Description <textarea name="description" id="description"></textarea></label>
+                <label for="genre">Genre<input type="text" name="genre" id="genre"></label>
+                <label for="pages">Pages<input type="number" name="pages" id="pages"></label>
+                <label for="imgUrl">Picture Url<input type="url" id="imgUrl" name="imgUrl"></label>
+                <label for="releaseDate">Release Date<input type="date" name="releaseDate" id="releaseDate"></label>
                 <fieldset>
                     <legend>Did you read it?</legend>
                     <div class="btn-container">

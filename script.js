@@ -73,10 +73,31 @@ const libContainer = document.querySelector("#library");
 const addBookBtn = document.getElementById("openForm");
 const modalForm = document.querySelector("dialog");
 const addBookform = document.querySelector("button[type=submit]");
+const dialogForm = document.getElementById("dialogForm");
 
 addBookBtn.addEventListener("click", () => {
   modalForm.showModal();
-})
+  addBookform.addEventListener("click", (e) => {
+    e.preventDefault();
+    const title =  document.getElementById("title").value.trim();
+    const author = document.getElementById("author").value.trim();
+    const genre = document.getElementById("genre").value.trim();
+    const pages = document.getElementById("pages").value.trim();
+    const description =  document.getElementById("description").value.trim();
+    const read =  document.querySelector(".btn-container input[type=radio]:checked").value;
+    const imgUrl = document.getElementById("imgUrl").value.trim();
+    const releaseDate = document.getElementById("releaseDate").value.trim();
+    addBookToLibrary(title, genre, description, author, imgUrl, releaseDate, pages, read);
+    localStorage.setItem("myLibrary", JSON.stringify(myLibrary));
+    dialogForm.style.display = "none";
+    const books = document.querySelectorAll(".book-box")
+    books.forEach((book)=>{book.remove();});
+
+    if (myLibrary.length > 0) {
+      myLibrary.forEach(book => { makeBookCard(book) });
+    }
+  });
+});
 
 function makeBookCard(book) {
   const bookBox = document.createElement("div");
@@ -133,18 +154,9 @@ function makeBookCard(book) {
   buttonContainer.append(readBtn, removeBook);
 
   bookBox.append(img, title, author, genre, pages, description, status, buttonContainer);
-
   libContainer.appendChild(bookBox);
 }
 
 if (myLibrary.length > 0) {
   myLibrary.forEach(book => { makeBookCard(book) });
 }
-
-// addBookform.addEventListener("click", (e) => {
-//   e.preventDefault();
-//   console.dir(e)
-//   console.log(e.target.form)
-
-//   addBookToLibrary();
-// })
