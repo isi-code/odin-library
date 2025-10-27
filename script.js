@@ -1,6 +1,6 @@
 const myLibrary = [];
 
-function Book(title, genre, description, author, pictureUrl, releaseDate, pages, read) {
+function Book(title, genre, description, author, pictureUrl, datePublished, pages, read) {
   // the constructor..
   if (!new.target) {
     throw Error("You must use the 'new' operator to call the constructor");
@@ -12,7 +12,7 @@ function Book(title, genre, description, author, pictureUrl, releaseDate, pages,
   this.genre = genre;
   this.description = description;
   this.pictureUrl = pictureUrl;
-  this.releaseDate = releaseDate;
+  this.datePublished = datePublished;
   this.read = read;
 
   this.makeBook = function () {
@@ -24,7 +24,7 @@ function Book(title, genre, description, author, pictureUrl, releaseDate, pages,
     book.description = this.description;
     book.author = this.author;
     book.pictureUrl = this.pictureUrl;
-    book.releaseDate = this.releaseDate;
+    book.datePublished = this.datePublished;
     book.pages = this.pages;
     book.read = this.read;
 
@@ -33,9 +33,9 @@ function Book(title, genre, description, author, pictureUrl, releaseDate, pages,
 
 };
 
-function addBookToLibrary(title, genre, description, author, pictureUrl, releaseDate, pages, read) {
+function addBookToLibrary(title, genre, description, author, pictureUrl, datePublished, pages, read) {
   // take params, create a book then a store it in the array
-  const book = new Book(title, genre, description, author, pictureUrl, releaseDate, pages, read);
+  const book = new Book(title, genre, description, author, pictureUrl, datePublished, pages, read);
   myLibrary.push(book.makeBook())
 }
 
@@ -75,6 +75,10 @@ const modalForm = document.querySelector("dialog");
 const addBookform = document.querySelector("button[type=submit]");
 const dialogForm = document.getElementById("dialogForm");
 
+if (myLibrary.length > 0) {
+  myLibrary.forEach(book => { makeBookCard(book) });
+}
+
 addBookBtn.addEventListener("click", () => {
   modalForm.showModal();
   addBookform.addEventListener("click", (e) => {
@@ -86,10 +90,12 @@ addBookBtn.addEventListener("click", () => {
     const description =  document.getElementById("description").value.trim();
     const read =  document.querySelector(".btn-container input[type=radio]:checked").value;
     const imgUrl = document.getElementById("imgUrl").value.trim();
-    const releaseDate = document.getElementById("releaseDate").value.trim();
-    addBookToLibrary(title, genre, description, author, imgUrl, releaseDate, pages, read);
+    const datePublished = document.getElementById("datePublished").value.trim();
+    addBookToLibrary(title, genre, description, author, imgUrl, datePublished, pages, read);
+    
     localStorage.setItem("myLibrary", JSON.stringify(myLibrary));
     dialogForm.style.display = "none";
+    
     const books = document.querySelectorAll(".book-box")
     books.forEach((book)=>{book.remove();});
 
@@ -129,6 +135,12 @@ function makeBookCard(book) {
   authorContent.textContent = book.author;
   author.appendChild(authorContent);
 
+  const datePublished = document.createElement("p");
+  datePublished.innerHTML = "<b>Date: </b>"
+  const date = document.createElement("span");
+  date.textContent = book.datePublished;
+  datePublished.appendChild(date);
+
   const pages = document.createElement("p");
   pages.innerHTML = "<b>Pages: </b>";
   const pagesContent = document.createElement("span");
@@ -147,16 +159,12 @@ function makeBookCard(book) {
 
   const readBtn = document.createElement("button");
   readBtn.textContent = "Mark Read";
-  readBtn.value = book.read === false ? "Not Read" : "Read";
+  readBtn.value = (book.read === false || book.read === "no") ? "Not Read" : "Read";
 
   const removeBook = document.createElement("button");
   removeBook.textContent = "Remove book";
   buttonContainer.append(readBtn, removeBook);
 
-  bookBox.append(img, title, author, genre, pages, description, status, buttonContainer);
+  bookBox.append(img, title, author,datePublished, genre, pages, description, status, buttonContainer);
   libContainer.appendChild(bookBox);
-}
-
-if (myLibrary.length > 0) {
-  myLibrary.forEach(book => { makeBookCard(book) });
 }
