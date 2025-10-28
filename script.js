@@ -17,7 +17,7 @@ function Book(title, genre, description, author, pictureUrl, datePublished, page
 };
 
 Book.prototype.updateRead = function(){
-  this.read = (this.read === "yes" || this.read === true) ? true : false;
+  this.read = (this.read === "yes" || this.read === true) ? false : true;
 }
 
 function addBookToLibrary(title, genre, description, author, pictureUrl, datePublished, pages, read) {
@@ -29,10 +29,10 @@ function addBookToLibrary(title, genre, description, author, pictureUrl, datePub
 const libContainer = document.querySelector("#library");
 const addBookBtn = document.getElementById("openForm");
 const modalForm = document.querySelector("dialog");
-const addBookform = document.querySelector("button[type=submit]");
+const addBookform = document.querySelector("form");
 const dialogForm = document.getElementById("dialogForm");
 
-if (!localStorage.hasOwnProperty("myLibrary")) {
+//if (!localStorage.hasOwnProperty("myLibrary")) {
   addBookToLibrary(
     "The Little Prince",
     "Novella",
@@ -54,34 +54,27 @@ if (!localStorage.hasOwnProperty("myLibrary")) {
     "280",
     false
   );
-  localStorage.setItem("myLibrary", JSON.stringify(myLibrary));
-} else {
-  const books = JSON.parse(localStorage.getItem("myLibrary"));
-  books.forEach(book => {
-    myLibrary.push(book);
-  });
-}
 refreshBooks()
 
 addBookBtn.addEventListener("click", () => {
   modalForm.showModal();
-  addBookform.addEventListener("click", (e) => {
-    e.preventDefault();
-    const title =  document.getElementById("title").value.trim();
-    const author = document.getElementById("author").value.trim();
-    const genre = document.getElementById("genre").value.trim();
-    const pages = document.getElementById("pages").value.trim();
-    const description =  document.getElementById("description").value.trim();
-    const read =  document.querySelector(".btn-container input[type=radio]:checked").value;
-    const imgUrl = document.getElementById("imgUrl").value.trim();
-    const datePublished = document.getElementById("datePublished").value.trim();
-    addBookToLibrary(title, genre, description, author, imgUrl, datePublished, pages, read);
-    
-    localStorage.setItem("myLibrary", JSON.stringify(myLibrary));
-    dialogForm.style.display = "none";
-    
-    refreshBooks()
-  });
+});
+
+addBookform.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const title =  document.getElementById("title").value.trim();
+  const author = document.getElementById("author").value.trim();
+  const genre = document.getElementById("genre").value.trim();
+  const pages = document.getElementById("pages").value.trim();
+  const description =  document.getElementById("description").value.trim();
+  const read =  document.querySelector(".btn-container input[type=radio]:checked").value;
+  const imgUrl = document.getElementById("imgUrl").value.trim();
+  const datePublished = document.getElementById("datePublished").value.trim();
+  addBookToLibrary(title, genre, description, author, imgUrl, datePublished, pages, read);
+  
+  modalForm.close();
+  
+  refreshBooks()
 });
 
 function makeBookCard(book) {
@@ -153,12 +146,10 @@ function makeBookCard(book) {
       const id = e.target.dataset.id;
       const indexToUpdate = myLibrary.findIndex(book => book.id === id);
       if (e.target.value === "Not read" || e.target.value === "Read"){
-        //(myLibrary[indexToUpdate].updateRead();
-        localStorage.setItem("myLibrary", JSON.stringify(myLibrary));
+        myLibrary[indexToUpdate].updateRead();
       }
       else if(e.target.className === "removeBtn"){
         myLibrary.splice(indexToUpdate,1);
-        localStorage.setItem("myLibrary", JSON.stringify(myLibrary))
       }
     }
     refreshBooks()
