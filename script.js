@@ -1,23 +1,21 @@
 const myLibrary = [];
 
-function Book(title, genre, description, author, pictureUrl, datePublished, pages, read) {
-  // the constructor..
-  if (!new.target) {
-    throw Error("You must use the 'new' operator to call the constructor");
+class Book{
+  constructor(title, genre, description, author, pictureUrl, datePublished, pages, read){
+    this.id = crypto.randomUUID();
+    this.title = title;
+    this.author = author;
+    this.pages = pages;
+    this.genre = genre;
+    this.description = description;
+    this.pictureUrl = pictureUrl;
+    this.datePublished = datePublished;
+    this.read = (read === "yes" || read === true) ? true : false;
   }
-  this.id = crypto.randomUUID();
-  this.title = title;
-  this.author = author;
-  this.pages = pages;
-  this.genre = genre;
-  this.description = description;
-  this.pictureUrl = pictureUrl;
-  this.datePublished = datePublished;
-  this.read = (read === "yes" || read === true) ? true : false;
-};
 
-Book.prototype.updateRead = function(){
-  this.read = (this.read === "yes" || this.read === true) ? false : true;
+  updateRead(){
+    return this.read = (this.read === "yes" || this.read === true) ? false : true;
+  }
 }
 
 function addBookToLibrary(title, genre, description, author, pictureUrl, datePublished, pages, read) {
