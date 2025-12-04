@@ -1,7 +1,16 @@
 const myLibrary = [];
 
-class Book{
-  constructor(title, genre, description, author, pictureUrl, datePublished, pages, read){
+class Book {
+  constructor(
+    title,
+    genre,
+    description,
+    author,
+    pictureUrl,
+    datePublished,
+    pages,
+    read
+  ) {
     this.id = crypto.randomUUID();
     this.title = title;
     this.author = author;
@@ -10,17 +19,36 @@ class Book{
     this.description = description;
     this.pictureUrl = pictureUrl;
     this.datePublished = datePublished;
-    this.read = (read === "yes" || read === true) ? true : false;
+    this.read = read === "yes" || read === true ? true : false;
   }
 
-  updateRead(){
-    return this.read = (this.read === "yes" || this.read === true) ? false : true;
+  updateRead() {
+    return (this.read =
+      this.read === "yes" || this.read === true ? false : true);
   }
 }
 
-function addBookToLibrary(title, genre, description, author, pictureUrl, datePublished, pages, read) {
+function addBookToLibrary(
+  title,
+  genre,
+  description,
+  author,
+  pictureUrl,
+  datePublished,
+  pages,
+  read
+) {
   // take params, create a book then a store it in the array
-  const book = new Book(title, genre, description, author, pictureUrl, datePublished, pages, read);
+  const book = new Book(
+    title,
+    genre,
+    description,
+    author,
+    pictureUrl,
+    datePublished,
+    pages,
+    read
+  );
   myLibrary.push(book);
 }
 
@@ -31,28 +59,28 @@ const addBookform = document.querySelector("form");
 const dialogForm = document.getElementById("dialogForm");
 
 //if (!localStorage.hasOwnProperty("myLibrary")) {
-  addBookToLibrary(
-    "The Little Prince",
-    "Novella",
-    "A stranded aviator meets a young prince who has travelled from his tiny asteroid to Earth; through their encounter the story touches on themes of friendship, love, loss, loneliness and the human condition.",
-    "Antoine de Saint-Exupéry",
-    "https://upload.wikimedia.org/wikipedia/en/0/05/Littleprince.JPG",
-    "April 1943",
-    "96",
-    true
-  );
+addBookToLibrary(
+  "The Little Prince",
+  "Novella",
+  "A stranded aviator meets a young prince who has travelled from his tiny asteroid to Earth; through their encounter the story touches on themes of friendship, love, loss, loneliness and the human condition.",
+  "Antoine de Saint-Exupéry",
+  "https://upload.wikimedia.org/wikipedia/en/0/05/Littleprince.JPG",
+  "April 1943",
+  "96",
+  true
+);
 
-  addBookToLibrary(
-    "Frankenstein; or, The Modern Prometheus",
-    "Gothic novel",
-    "Frankenstein tells the story of Victor Frankenstein, a young scientist who creates a sapient creature in an unorthodox scientific experiment that involved putting it together with different body parts.",
-    "Mary Shelley",
-    "https://upload.wikimedia.org/wikipedia/commons/6/65/Frankenstein_and_Monster_-_The_Cincinnati_Enquirer%2C_1910.jpg",
-    "January 1818",
-    "280",
-    false
-  );
-refreshBooks()
+addBookToLibrary(
+  "Frankenstein; or, The Modern Prometheus",
+  "Gothic novel",
+  "Frankenstein tells the story of Victor Frankenstein, a young scientist who creates a sapient creature in an unorthodox scientific experiment that involved putting it together with different body parts.",
+  "Mary Shelley",
+  "https://upload.wikimedia.org/wikipedia/commons/6/65/Frankenstein_and_Monster_-_The_Cincinnati_Enquirer%2C_1910.jpg",
+  "January 1818",
+  "280",
+  false
+);
+refreshBooks();
 
 addBookBtn.addEventListener("click", () => {
   modalForm.showModal();
@@ -60,19 +88,30 @@ addBookBtn.addEventListener("click", () => {
 
 addBookform.addEventListener("submit", (e) => {
   e.preventDefault();
-  const title =  document.getElementById("title").value.trim();
+  const title = document.getElementById("title").value.trim();
   const author = document.getElementById("author").value.trim();
   const genre = document.getElementById("genre").value.trim();
   const pages = document.getElementById("pages").value.trim();
-  const description =  document.getElementById("description").value.trim();
-  const read =  document.querySelector(".btn-container input[type=radio]:checked").value;
+  const description = document.getElementById("description").value.trim();
+  const read = document.querySelector(
+    ".btn-container input[type=radio]:checked"
+  ).value;
   const imgUrl = document.getElementById("imgUrl").value.trim();
   const datePublished = document.getElementById("datePublished").value.trim();
-  addBookToLibrary(title, genre, description, author, imgUrl, datePublished, pages, read);
-  
+  addBookToLibrary(
+    title,
+    genre,
+    description,
+    author,
+    imgUrl,
+    datePublished,
+    pages,
+    read
+  );
+
   modalForm.close();
-  
-  refreshBooks()
+
+  refreshBooks();
 });
 
 function makeBookCard(book) {
@@ -87,26 +126,26 @@ function makeBookCard(book) {
 
   const description = document.createElement("div");
   const descriptionTitle = document.createElement("p");
-  descriptionTitle.innerHTML = '<b>Description: </b>';
+  descriptionTitle.innerHTML = "<b>Description: </b>";
   const descriptionContent = document.createElement("p");
   descriptionContent.className = "desc-text";
   descriptionContent.textContent = book.description;
   description.append(descriptionTitle, descriptionContent);
 
   const genre = document.createElement("p");
-  genre.innerHTML = '<b>Genre: </b>';
+  genre.innerHTML = "<b>Genre: </b>";
   const genreContent = document.createElement("span");
   genreContent.textContent = book.genre;
   genre.appendChild(genreContent);
 
   const author = document.createElement("p");
-  author.innerHTML = "<b>Author: </b>"
+  author.innerHTML = "<b>Author: </b>";
   const authorContent = document.createElement("span");
   authorContent.textContent = book.author;
   author.appendChild(authorContent);
 
   const datePublished = document.createElement("p");
-  datePublished.innerHTML = "<b>Date: </b>"
+  datePublished.innerHTML = "<b>Date: </b>";
   const date = document.createElement("span");
   date.textContent = book.datePublished;
   datePublished.appendChild(date);
@@ -120,47 +159,62 @@ function makeBookCard(book) {
   const status = document.createElement("p");
   status.innerHTML = "<b>Status: </b>";
   const statusContent = document.createElement("span");
-  statusContent.setAttribute("class", "status")
+  statusContent.setAttribute("class", "status");
   statusContent.textContent = book.read === false ? "Not Read" : "Read 🤓";
   status.appendChild(statusContent);
 
   const buttonContainer = document.createElement("div");
-  buttonContainer.setAttribute("class", "btn-container")
+  buttonContainer.setAttribute("class", "btn-container");
 
   const readBtn = document.createElement("button");
   readBtn.textContent = "Mark Read";
-  readBtn.dataset.id = book.id
-  readBtn.value = (book.read === false || book.read === "no") ? "Not read" : "Read";
+  readBtn.dataset.id = book.id;
+  readBtn.value =
+    book.read === false || book.read === "no" ? "Not read" : "Read";
 
   const removeBook = document.createElement("button");
-  removeBook.setAttribute("class","removeBtn")
+  removeBook.setAttribute("class", "removeBtn");
   removeBook.textContent = "Remove book";
-  removeBook.dataset.id = book.id
+  removeBook.dataset.id = book.id;
   buttonContainer.append(readBtn, removeBook);
-  bookBox.append(img, title, author,datePublished, genre, pages, description, status, buttonContainer);
+  bookBox.append(
+    img,
+    title,
+    author,
+    datePublished,
+    genre,
+    pages,
+    description,
+    status,
+    buttonContainer
+  );
 
-    bookBox.addEventListener("click",(e)=>{
-    if (e.target.tagName === "BUTTON"){
+  bookBox.addEventListener("click", (e) => {
+    if (e.target.tagName === "BUTTON") {
       const id = e.target.dataset.id;
-      const indexToUpdate = myLibrary.findIndex(book => book.id === id);
-      if (e.target.value === "Not read" || e.target.value === "Read"){
+      const indexToUpdate = myLibrary.findIndex((book) => book.id === id);
+      if (e.target.value === "Not read" || e.target.value === "Read") {
         myLibrary[indexToUpdate].updateRead();
-      }
-      else if(e.target.className === "removeBtn"){
-        myLibrary.splice(indexToUpdate,1);
+      } else if (e.target.className === "removeBtn") {
+        myLibrary.splice(indexToUpdate, 1);
       }
     }
-    refreshBooks()
+    refreshBooks();
     console.log(myLibrary);
-  })
+  });
   libContainer.appendChild(bookBox);
 }
 
-function refreshBooks(){
-  const books = document.querySelectorAll(".book-box")
-  if (books.length > 0) books.forEach((book)=>{book.remove();});
+function refreshBooks() {
+  const books = document.querySelectorAll(".book-box");
+  if (books.length > 0)
+    books.forEach((book) => {
+      book.remove();
+    });
 
   if (myLibrary.length > 0) {
-    myLibrary.forEach(book => { makeBookCard(book) });
+    myLibrary.forEach((book) => {
+      makeBookCard(book);
+    });
   }
 }
