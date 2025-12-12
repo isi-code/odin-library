@@ -17,11 +17,11 @@
         </div>
         <dialog id="dialogForm">
             <form action="#">
-                <label for="title">Title<input type="text" name="title" id="title"></label>
-                <label for="author">Author<input type="text" name="author" id="author"></label>
-                <label for="description">Description <textarea name="description" id="description"></textarea></label>
-                <label for="genre">Genre<input type="text" name="genre" id="genre"></label>
-                <label for="pages">Pages<input type="number" name="pages" id="pages"></label>
+                <label for="title">Title<input type="text" name="title" id="title" required></label>
+                <label for="author">Author<input type="text" name="author" id="author" pattern="[A-Za-z\-]+" required></label>
+                <label for="description">Description <textarea name="description" id="description" minlength="5"></textarea></label>
+                <label for="genre">Genre<input type="text" name="genre" id="genre" pattern="[A-Za-z\-]+" required></label>
+                <label for="pages">Pages<input type="number" name="pages" id="pages" required></label>
                 <label for="imgUrl">Picture Url<input type="url" id="imgUrl" name="imgUrl"></label>
                 <label for="datePublished">Date Published<input type="date" name="datePublished" id="datePublished"></label>
                 <fieldset>

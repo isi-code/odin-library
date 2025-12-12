@@ -218,3 +218,16 @@ function refreshBooks() {
     });
   }
 }
+
+
+const inputArray = addBookform.querySelectorAll("input");
+console.dir(inputArray);
+
+inputArray.forEach((input) => {
+  input.addEventListener("input", () => {
+    input.setCustomValidity("");
+    if (input.validity.valueMissing){
+      input.setCustomValidity(`“The ${input.name.toUpperCase()} field must be filled!”`);
+    }
+  });
+});
